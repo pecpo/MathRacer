@@ -1,4 +1,5 @@
 #include "MathGame.h"
+#include "DinoGame.h"
 
 LiquidCrystal_I2C lcd1(0x27, 16, 2);
 LiquidCrystal_I2C lcd2(0x25, 16, 2);
@@ -34,6 +35,45 @@ int game = 0;
 bool printed = false;
 
 MathGame mathGame;
+DinoGame dinoGame;
+
+byte dino[8] = {
+  0b00000,
+  0b00111,
+
+  0b00111,
+  0b10110,
+  0b11111,
+  0b01010,
+  0b01010,
+  0b00000
+};
+
+byte
+  cacti[8] = {
+  0b00100,
+  0b00101,
+  0b10101,
+  0b10101,
+  0b10111,
+
+  0b11100,
+  0b00100,
+  0b00000
+};
+
+byte bird[8] = {
+  0b00000,
+
+  0b00100,
+  0b01100,
+  0b11110,
+  0b00111,
+  0b00110,
+  0b00100,
+
+  0b00000
+};
 
 void setup() {
   // put your setup code here, to run once:
@@ -55,10 +95,16 @@ void setup() {
   lcd1.init();
   lcd1.backlight();
   lcd1.cursor();
+  lcd1.createChar(0, dino);
+  lcd1.createChar(1, cacti);
+  lcd1.createChar(2, bird);
 
   lcd2.init();
   lcd2.backlight();
   lcd2.cursor();
+  lcd2.createChar(0, dino);
+  lcd2.createChar(1, cacti);
+  lcd2.createChar(2, bird);
 }
 
 void loop() {
@@ -76,6 +122,8 @@ void loop() {
       lcd2.clear();
 
       lcd1.print("1. Math Racer");
+      lcd1.setCursor(0, 1);
+      lcd1.print("2. Dino Game");
 
       printed = true;
     }
@@ -92,6 +140,8 @@ void loop() {
         submitFlag1 = false;
         game = option+1;
         gameRunning = true;
+        mathGame.reset();
+        dinoGame.reset();
       }
     }
     else submitFlag1 = true;
@@ -101,7 +151,11 @@ void loop() {
   else {
     if (game == 1)
       mathGame.runNextIteration(lcd1, lcd2, pot1, button1, back1, submit1, pot2, button2, back2, submit2, flag1, backFlag1, submitFlag1, flag2, backFlag2, submitFlag2, player1, player2, gameRunning);
+    else if (game == 2)
+      dinoGame.runNextIteration(lcd1, lcd2, pot1, button1, back1, submit1, pot2, button2, back2, submit2, flag1, backFlag1, submitFlag1, flag2, backFlag2, submitFlag2, player1, player2, gameRunning);
     printed = false;
+
+    return;
   }
 
   delay(250);

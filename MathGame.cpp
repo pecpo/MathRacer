@@ -159,6 +159,18 @@ void MathGame::parseInput(LiquidCrystal_I2C &p1, LiquidCrystal_I2C &p2, int &ans
   }
 }
 
+void MathGame::reset() {
+  input1 = 0;
+  input2 = 0;
+
+  coord1 = 0;
+  coord2 = 0;
+
+  correct1 = 0;
+  correct2 = 0;
+  solving1 = false, solving2 = false;
+}
+
 void MathGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2, int &pot1, int &button1, int &back1, int &submit1, int &pot2, int &button2, int &back2, int &submit2, bool &flag1, bool &backFlag1, bool &submitFlag1, bool &flag2, bool &backFlag2, bool &submitFlag2, Servo &player1, Servo &player2, bool &gameRunning)
 {
   parseInput(lcd1, lcd2, ans1, coord1, minPos1, pot1, button1, back1, submit1, input1, flag1, backFlag1, submitFlag1, solving1, correct1, player1, gameRunning);
@@ -175,4 +187,6 @@ void MathGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2
     delay(3000);
     return;
   }
+
+  delay(250);
 }
