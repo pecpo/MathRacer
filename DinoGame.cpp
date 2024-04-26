@@ -16,7 +16,7 @@ bool DinoGame::isBird(byte val) {
   return false;
 }
 
-void DinoGame::parseInput(LiquidCrystal_I2C &lcd, LiquidCrystal_I2C &p2, bool &jumped, int &pot, int &button, int &back, int &submit, bool &flag, bool &backFlag, bool &submitFlag, byte state[16], bool &gameRunning, Servo &player) {
+void DinoGame::parseInput(LiquidCrystal_I2C &lcd, LiquidCrystal_I2C &p2, bool &jumped, int &pot, int &button, int &back, int &submit, bool &flag, bool &backFlag, bool &submitFlag, byte state[16], bool &gameRunning, Servo &player, bool left, int &buzzer) {
   int submitVal = digitalRead(submit);
 
   lcd.clear();
@@ -49,7 +49,12 @@ void DinoGame::parseInput(LiquidCrystal_I2C &lcd, LiquidCrystal_I2C &p2, bool &j
     lcd.print("LOSER!");
     p2.print("WINNER!");
 
-    player.write(180);
+    if (left) {
+      player.write(0);
+    }
+    else {
+      player.write(140);
+    }
 
     delay(1000);
 
@@ -96,7 +101,7 @@ void DinoGame::parseInput(LiquidCrystal_I2C &lcd, LiquidCrystal_I2C &p2, bool &j
   }
 }
 
-void DinoGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2, int &pot1, int &button1, int &back1, int &submit1, int &pot2, int &button2, int &back2, int &submit2, bool &flag1, bool &backFlag1, bool &submitFlag1, bool &flag2, bool &backFlag2, bool &submitFlag2, Servo &player1, Servo &player2, bool &gameRunning) {
+void DinoGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2, int &pot1, int &button1, int &back1, int &submit1, int &pot2, int &button2, int &back2, int &submit2, bool &flag1, bool &backFlag1, bool &submitFlag1, bool &flag2, bool &backFlag2, bool &submitFlag2, Servo &player, bool &gameRunning, int &buzzer) {
   if (!gameRunning) {
     delay(1000);
     return;
@@ -106,7 +111,7 @@ void DinoGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2
   gameSpeed2 = 1000 - map(analogRead(pot2), 0, 1023, 0, 1000);
 
   if (waited1 >= gameSpeed1) {
-    parseInput(lcd1, lcd2, jumped1, pot1, button1, back1, submit1, flag1, backFlag1, submitFlag1, state1, gameRunning, player2);
+    parseInput(lcd1, lcd2, jumped1, pot1, button1, back1, submit1, flag1, backFlag1, submitFlag1, state1, gameRunning, player, true, buzzer);
     if (!gameRunning) {
       delay(1000);
       return;
@@ -114,7 +119,7 @@ void DinoGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2
     waited1 = 0;
   }
   if (waited2 >= gameSpeed2) {
-    parseInput(lcd2, lcd1, jumped2, pot2, button2, back2, submit2, flag2, backFlag2, submitFlag2, state2, gameRunning, player1);
+    parseInput(lcd2, lcd1, jumped2, pot2, button2, back2, submit2, flag2, backFlag2, submitFlag2, state2, gameRunning, player, false, buzzer);
     if (!gameRunning) {
       delay(1000);
       return;

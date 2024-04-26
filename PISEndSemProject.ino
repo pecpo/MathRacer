@@ -4,11 +4,9 @@
 LiquidCrystal_I2C lcd1(0x27, 16, 2);
 LiquidCrystal_I2C lcd2(0x25, 16, 2);
 
-Servo player1;
-Servo player2;
+Servo player;
 
-int servo1 = 3;
-int servo2 = 5;
+int servo = 3;
 
 int pot1 = A0;
 int button1 = 2;
@@ -27,6 +25,8 @@ bool submitFlag1 = true;
 bool flag2 = true;
 bool backFlag2 = true;
 bool submitFlag2 = true;
+
+int buzzer = 5;
 
 bool gameRunning = false;
 
@@ -89,8 +89,7 @@ void setup() {
   pinMode(back2, INPUT_PULLUP);
   pinMode(submit2, INPUT_PULLUP);
 
-  player1.attach(servo1);
-  player2.attach(servo2);
+  player.attach(servo);
 
   lcd1.init();
   lcd1.backlight();
@@ -113,8 +112,7 @@ void loop() {
   if (!gameRunning) {
     game = 0;
 
-    player1.write(0);
-    player2.write(0);
+    player.write(70);
 
     if (!printed) {
 
@@ -150,9 +148,9 @@ void loop() {
 
   else {
     if (game == 1)
-      mathGame.runNextIteration(lcd1, lcd2, pot1, button1, back1, submit1, pot2, button2, back2, submit2, flag1, backFlag1, submitFlag1, flag2, backFlag2, submitFlag2, player1, player2, gameRunning);
+      mathGame.runNextIteration(lcd1, lcd2, pot1, button1, back1, submit1, pot2, button2, back2, submit2, flag1, backFlag1, submitFlag1, flag2, backFlag2, submitFlag2, player, gameRunning, buzzer);
     else if (game == 2)
-      dinoGame.runNextIteration(lcd1, lcd2, pot1, button1, back1, submit1, pot2, button2, back2, submit2, flag1, backFlag1, submitFlag1, flag2, backFlag2, submitFlag2, player1, player2, gameRunning);
+      dinoGame.runNextIteration(lcd1, lcd2, pot1, button1, back1, submit1, pot2, button2, back2, submit2, flag1, backFlag1, submitFlag1, flag2, backFlag2, submitFlag2, player, gameRunning, buzzer);
     printed = false;
 
     return;

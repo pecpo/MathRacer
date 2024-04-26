@@ -18,7 +18,7 @@ void MathGame::displayProblem(LiquidCrystal_I2C &lcd, int &ans, int &coord, int 
   if (r == 1)
   {
     num2 = num1;
-    num1 = random(num2, 11);
+    num1 = random(num2+1, 11);
   }
   if (r == 3)
   {
@@ -72,7 +72,7 @@ void MathGame::displayProblem(LiquidCrystal_I2C &lcd, int &ans, int &coord, int 
   }
 }
 
-void MathGame::parseInput(LiquidCrystal_I2C &p1, LiquidCrystal_I2C &p2, int &ans, int &coord, int &minPos, int &pot, int &button, int &back, int &submit, int &input, bool &flag, bool &backFlag, bool &submitFlag, bool &solving, int &correct, Servo &player, bool &gameRunning)
+void MathGame::parseInput(LiquidCrystal_I2C &p1, LiquidCrystal_I2C &p2, int &ans, int &coord, int &minPos, int &pot, int &button, int &back, int &submit, int &input, bool &flag, bool &backFlag, bool &submitFlag, bool &solving, int &correct, Servo &player, bool &gameRunning, bool left, int &buzzer)
 {
   if (!solving)
   {
@@ -137,7 +137,12 @@ void MathGame::parseInput(LiquidCrystal_I2C &p1, LiquidCrystal_I2C &p2, int &ans
         correct++;
         if (correct > threshold)
         {
-          player.write(180);
+          if (left) {
+            player.write(140);
+          }
+          else {
+            player.write(0);
+          }
           p1.clear();
           p1.print("WINNER!");
           p2.clear();
@@ -171,22 +176,33 @@ void MathGame::reset() {
   solving1 = false, solving2 = false;
 }
 
-void MathGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2, int &pot1, int &button1, int &back1, int &submit1, int &pot2, int &button2, int &back2, int &submit2, bool &flag1, bool &backFlag1, bool &submitFlag1, bool &flag2, bool &backFlag2, bool &submitFlag2, Servo &player1, Servo &player2, bool &gameRunning)
+void MathGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2, int &pot1, int &button1, int &back1, int &submit1, int &pot2, int &button2, int &back2, int &submit2, bool &flag1, bool &backFlag1, bool &submitFlag1, bool &flag2, bool &backFlag2, bool &submitFlag2, Servo &player, bool &gameRunning, int &buzzer)
 {
-  parseInput(lcd1, lcd2, ans1, coord1, minPos1, pot1, button1, back1, submit1, input1, flag1, backFlag1, submitFlag1, solving1, correct1, player1, gameRunning);
+
+  tone(buzzer, melody[(currentPlaying++) % melodyLength], 1000/noteDurations[currentPlaying % melodyLength]);
+  delay(1000/noteDurations[(currentPlaying - 1) % melodyLength]);
+
+  parseInput(lcd1, lcd2, ans1, coord1, minPos1, pot1, button1, back1, submit1, input1, flag1, backFlag1, submitFlag1, solving1, correct1, player, gameRunning, true, buzzer);
 
   if (!gameRunning)
   {
+  noTone(buzzer);
+
     delay(3000);
     return;
   }
-  parseInput(lcd2, lcd1, ans2, coord2, minPos2, pot2, button2, back2, submit2, input2, flag2, backFlag2, submitFlag2, solving2, correct2, player2, gameRunning);
+  parseInput(lcd2, lcd1, ans2, coord2, minPos2, pot2, button2, back2, submit2, input2, flag2, backFlag2, submitFlag2, solving2, correct2, player, gameRunning, false, buzzer);
 
   if (!gameRunning)
   {
+  noTone(buzzer);
+
     delay(3000);
     return;
   }
 
-  delay(250);
+  noTone(buzzer);
+
+
+  // delay(250);
 }
