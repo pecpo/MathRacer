@@ -17,52 +17,6 @@ class DinoGame {
     byte state1[16] = {128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128};
     byte state2[16] = {128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128};
 
-    int melody[32] = {
-  NOTE_C4, NOTE_G3, NOTE_E3, NOTE_C3,
-  NOTE_C4, NOTE_G3, NOTE_E3, NOTE_C3,
-  NOTE_C4, NOTE_G3, NOTE_E3, NOTE_C3,
-  NOTE_C4, NOTE_G3, NOTE_E3, NOTE_C3,
-  NOTE_C4, NOTE_G3, NOTE_E3, NOTE_C3,
-  NOTE_C4, NOTE_G3, NOTE_E3, NOTE_C3,
-  NOTE_C4, NOTE_G3, NOTE_E3, NOTE_C3,
-  NOTE_C4, NOTE_G3, NOTE_E3, NOTE_C3,
-};
-
-// note durations: 4 = quarter note, 8 = eighth note, etc.:
-int noteDurations[32] = {
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-};
-
-int length = 32;
-
-int deathMelody[24] = {
-  NOTE_A4, NOTE_REST, NOTE_GS4, NOTE_REST,
-  NOTE_G4, NOTE_REST, NOTE_FS4, NOTE_REST,
-  NOTE_F4, NOTE_REST, NOTE_E4, NOTE_REST,
-  NOTE_D4, NOTE_REST, NOTE_CS4, NOTE_REST,
-  NOTE_C4, NOTE_REST, NOTE_B3, NOTE_REST,
-  NOTE_AS3, NOTE_REST, NOTE_A3, NOTE_REST,
-};
-
-// note durations: 4 = quarter note, 8 = eighth note, etc.:
-int deathNoteDurations[24] = {
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-  4, 4, 4, 4,
-};
-
-int deathLength = 24;
-
   public:
     bool isCacti(byte val);
     bool isBird(byte val);

@@ -30,6 +30,14 @@ void MathGame::displayProblem(LiquidCrystal_I2C &lcd, int &ans, int &coord, int 
     num2 = random(1, 11);
   }
 
+  if (r == 1) {
+    if (num1 < num2) {
+      int temp = num1;
+      num1 = num2;
+      num2 = temp;
+    }
+  }
+
   lcd.clear();
   coord = 0;
 
@@ -176,6 +184,32 @@ void MathGame::reset() {
   solving1 = false, solving2 = false;
 }
 
+void MathGame::playDeath(int &buzzer) {
+  for (int thisNote = 0; thisNote < deathLength; thisNote++) {
+
+    // to calculate the note duration, take one second divided by the note type.
+
+    //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
+
+    int noteDuration = 1000 / deathNoteDurations[thisNote];
+
+    tone(buzzer, deathMelody[thisNote], noteDuration);
+
+    // to distinguish the notes, set a minimum time between them.
+
+    // the note's duration + 30% seems to work well:
+
+    int pauseBetweenNotes = noteDuration * 1.30;
+
+    delay(pauseBetweenNotes);
+
+    // stop the tone playing:
+
+    noTone(buzzer);
+
+  }
+}
+
 void MathGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2, int &pot1, int &button1, int &back1, int &submit1, int &pot2, int &button2, int &back2, int &submit2, bool &flag1, bool &backFlag1, bool &submitFlag1, bool &flag2, bool &backFlag2, bool &submitFlag2, Servo &player, bool &gameRunning, int &buzzer)
 {
 
@@ -188,7 +222,7 @@ void MathGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2
   {
   noTone(buzzer);
 
-    delay(3000);
+    playDeath(buzzer);
     return;
   }
   parseInput(lcd2, lcd1, ans2, coord2, minPos2, pot2, button2, back2, submit2, input2, flag2, backFlag2, submitFlag2, solving2, correct2, player, gameRunning, false, buzzer);
@@ -197,7 +231,7 @@ void MathGame::runNextIteration(LiquidCrystal_I2C &lcd1, LiquidCrystal_I2C &lcd2
   {
   noTone(buzzer);
 
-    delay(3000);
+    playDeath(buzzer);
     return;
   }
 
