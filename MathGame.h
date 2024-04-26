@@ -51,7 +51,8 @@ int noteDurations[29] = {
   4, 8, 8, 4, 4, 4, 4, 4
 };
 
-int deathMelody[12] = {
+int deathMelody[15] = {
+  NOTE_C5, NOTE_E5, NOTE_G5,
   NOTE_C5, NOTE_E5, NOTE_G5,
   NOTE_C5, NOTE_E5, NOTE_G5,
   NOTE_C5, NOTE_E5, NOTE_G5,
@@ -59,14 +60,15 @@ int deathMelody[12] = {
 };
 
 // note durations: 4 = quarter note, 8 = eighth note, etc.:
-int deathNoteDurations[12] = {
+int deathNoteDurations[15] = {
+  4, 4, 4,
   4, 4, 4,
   4, 4, 4,
   4, 4, 4,
   4, 4, 4,
 };
 
-int deathLength = 12;
+int deathLength = 15;
 
 public:
   void changeCoord(int num, int &coord);

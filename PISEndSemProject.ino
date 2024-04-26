@@ -144,6 +144,16 @@ void loop() {
     }
     else submitFlag1 = true;
 
+    if (game == 2) {
+      lcd1.clear();
+      lcd2.clear();
+
+      lcd1.print("Reset speed!");
+      lcd2.print("Reset speed!");
+
+      delay(2000);
+    }
+
   }
 
   else {
